@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini AI Assistant</title>
+    {% load static %}
+    <script src="{% static 'script.js' %}"></script>
+</head>
+
+<body>
+    <h2>Upload Image & Ask a Question</h2>
+    <form method="post" enctype="multipart/form-data" id="askForm">
+        {% csrf_token %}
+        {{form.as_p}}
+        <!-- <input type="file" id="id_image">
+                <input type="text" id="id_question" placeholder="Type your question..."> -->
+        <button type="button" onclick="sendRequest()">ASK</button>
+    </form>
+    <h3>AI Response:</h3>
+    <p id="response"></p>
+
+</body>
+
+</html>
