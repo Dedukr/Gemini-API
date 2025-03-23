@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import SplitText from "./components/SplitText";
+import TextToSpeech from "./components/TextToSpeech";
 import ReactMarkdown from "react-markdown";
+import SpeechRecognition from "./components/SpeechRecognition";
 
 const FileUploadComponent = () => {
   const [file, setFile] = useState(null);
@@ -8,22 +11,31 @@ const FileUploadComponent = () => {
   const [response, setResponse] = useState("");
   const [file_url, setFileUrl] = useState("");
 
+  const textareaRef = useRef(null);
+
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
     setFileUrl(URL.createObjectURL(e.target.files[0]));
     setResponse("");
   };
 
-  const handleQuestionChange = (e) => {
-    if (e && e.target) {
-      console.log("From change handler:", e.target.value);
-      setQuestion(e.target.value);
-    } else {
+  const handleQuestionChange = (e, func = false) => {
+    if (func) {
       console.log("From another function:", e);
       setQuestion(e);
+      return;
     }
+    console.log("From handler function:", e.target.value);
+    setQuestion(e.target.value);
   };
-  
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto"; // Reset height to calculate new height
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Set height based on content
+    }
+  }, [question]); // Trigger this effect whenever `question` changes
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setAskedQuestion(question);
@@ -67,17 +79,29 @@ const FileUploadComponent = () => {
               <input
                 type="file"
                 className="file-input w-full"
-                placeholder="Email"
+                placeholder="File"
                 onChange={handleFileChange}
               />
               <label className="fieldset-label">Question</label>
-              <input
-                type="input"
+              <textarea
+                ref={textareaRef}
+                type="input w-full"
                 className="input w-full"
                 placeholder="Ask?"
                 value={question}
+                style={{
+                  resize: "none", // Prevent manual resizing
+                  overflow: "hidden", // Hide scrollbars
+                  minHeight: "40px", // Set a minimum height
+                  textWrap: "wrap",
+                }}
+                onInput={(e) => {
+                  e.target.style.height = "auto"; // Reset height to calculate new height
+                  e.target.style.height = `${e.target.scrollHeight}px`; // Set height based on content
+                }}
                 onChange={handleQuestionChange}
               />
+              <SpeechRecognition on_change={handleQuestionChange} />
               <button
                 type="submit"
                 className="btn btn-neutral mt-4"
@@ -91,7 +115,13 @@ const FileUploadComponent = () => {
               >
                 <div className="card-body">
                   <h1 className="card-title">{asked_question}</h1>
-                  <ReactMarkdown>{response}</ReactMarkdown>
+                  <TextToSpeech text={response} />
+                  <div className="mt-5">
+                    {/* Render Markdown */}
+                    <ReactMarkdown>{response}</ReactMarkdown>
+                    {/* Animate Plain Text */}
+                    {/* <SplitText text={response} /> */}
+                  </div>
                 </div>
               </div>
             </fieldset>
@@ -105,11 +135,12 @@ const FileUploadComponent = () => {
         <div className="card-body">
           <h2 className="card-title">{file?.name}</h2>
           <figure className="max-w-sm">
-            {file_url && <img src={file_url} alt="File" />}
+            {file_url && <img src={file_url} alt="Not supported for preview" />}
           </figure>
         </div>
       </div>
     </div>
   );
 };
+
 export default FileUploadComponent;

@@ -1,10 +1,10 @@
-import { useSprings} from "@react-spring/web";
+import { useSprings, animated } from "@react-spring/web";
 import { useEffect, useRef, useState } from "react";
 
 const SplitText = ({
   text = "",
   className = "",
-  delay = 100,
+  delay = 10,
   animationFrom = { opacity: 0, transform: "translate3d(0,40px,0)" },
   animationTo = { opacity: 1, transform: "translate3d(0,0,0)" },
   easing = "easeOutCubic",

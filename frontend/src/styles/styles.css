@@ -7,13 +7,24 @@
 
 @keyframes flash {
   0% {
-    background-color: #5cb6f6; /* Original button color */
-  }
-  50% {
-    background-color: #5cfff2;
+    background-color: #636363; /* Original button color */
     opacity: 0.6;
   }
-  100% {
-    background-color: #5cb6f6; /* Back to original color */
+  50% {
+    background-color: #3b3b3b;
+    opacity: 1;
   }
+  100% {
+    background-color: #636363; /* Back to original color */
+    opacity: 0.6;
+  }
+}
+
+.btn-speech {
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 20px 30px -6px rgba(0, 0, 0, 0.3);
+}
+.btn-speech:hover {
+  box-shadow: none;
+  transform: translateY(3px);
 }
