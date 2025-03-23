@@ -1,0 +1,19 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+.flashing {
+  animation: flash 2s infinite;
+}
+
+@keyframes flash {
+  0% {
+    background-color: #5cb6f6; /* Original button color */
+  }
+  50% {
+    background-color: #5cfff2;
+    opacity: 0.6;
+  }
+  100% {
+    background-color: #5cb6f6; /* Back to original color */
+  }
+}

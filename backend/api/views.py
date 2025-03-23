@@ -20,9 +20,7 @@ class AskGeminiView(APIView):
 
         if not question or not image:
             return Response({"error": "Missing question or image"}, status=400)
-
         try:
-
             # Upload image to S3
             s3 = boto3.client(
                 "s3",
@@ -49,7 +47,7 @@ class AskGeminiView(APIView):
             image_url = s3.generate_presigned_url(
                 ClientMethod="get_object",
                 Params={"Bucket": settings.AWS_STORAGE_BUCKET_NAME, "Key": file_key},
-                ExpiresIn=60,  # URL valid for 1 minutes
+                ExpiresIn=15,  # URL valid for 15 seconds
             )
             image_parsed = requests.get(image_url)
 
