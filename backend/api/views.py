@@ -1,5 +1,6 @@
 import json
 import os
+import uuid
 
 import boto3
 import requests
@@ -20,6 +21,7 @@ class AskGeminiView(APIView):
 
         if not question or not image:
             return Response({"error": "Missing question or image"}, status=400)
+
         try:
             # Upload image to S3
             s3 = boto3.client(
@@ -29,14 +31,19 @@ class AskGeminiView(APIView):
                 region_name=settings.AWS_S3_REGION_NAME,
             )
 
-            file_key = image.name
+            file_key = f"{uuid.uuid4()}-{image.name}"
+            content_type = image.content_type or "application/octet-stream"
+
+            print(
+                f"Question: {question}, Image: {image}, ImageName:{image.name} Content Type: {getattr(image, 'content_type', None)}"
+            )
 
             # Upload the file (no ACL: public-read)
             s3.upload_fileobj(
                 Fileobj=image,
                 Bucket=settings.AWS_STORAGE_BUCKET_NAME,
                 Key=file_key,
-                ExtraArgs={"ContentType": image.content_type},
+                ExtraArgs={"ContentType": content_type},
             )
 
         except Exception as e:

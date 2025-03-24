@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import SplitText from "./components/SplitText";
 import TextToSpeech from "./components/TextToSpeech";
 import ReactMarkdown from "react-markdown";
 import SpeechRecognition from "./components/SpeechRecognition";
+import axios from "axios";
 
-const FileUploadComponent = () => {
+const App = () => {
   const [file, setFile] = useState(null);
   const [question, setQuestion] = useState("");
   const [asked_question, setAskedQuestion] = useState("");
@@ -48,16 +48,14 @@ const FileUploadComponent = () => {
     const formData = new FormData();
     formData.append("image", file);
     formData.append("question", question);
+    console.log("Image", file);
+    console.log("question", question);
 
     setResponse("Waiting for the response...");
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/ask/", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await res.json();
+      const res = await axios.post("http://127.0.0.1:8000/api/ask/", formData);
+      const data = res.data;
 
       if (data.error) {
         setResponse("Error: " + data.error);
@@ -143,4 +141,4 @@ const FileUploadComponent = () => {
   );
 };
 
-export default FileUploadComponent;
+export default App;
