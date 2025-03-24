@@ -1,5 +1,12 @@
-__pycache__
-*.pyc
+# Ignore all files
+**/*.pyc
+**/*.pyo
+**/*.mo
+.gitignore
+.git/
+**/__pycache__/
+db.sqlite3
+**/*.md
 
 # Environment variables
 .env
