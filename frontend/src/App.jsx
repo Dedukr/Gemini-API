@@ -48,22 +48,40 @@ const App = () => {
     const formData = new FormData();
     formData.append("image", file);
     formData.append("question", question);
-    console.log("Image", file);
-    console.log("question", question);
 
     setResponse("Waiting for the response...");
 
     try {
-      const res = await axios.post("http://127.0.0.1:8000/api/ask/", formData);
-      const data = res.data;
+      axios
+        .post("http://127.0.0.1/api/ask/", formData)
+        .then((res) => {
+          const data = res.data;
 
-      if (data.error) {
-        setResponse("Error: " + data.error);
-      } else {
-        setResponse(data.answer || "No answer provided.");
-      }
+          if (data.error) {
+            setResponse("Error: " + data.error);
+          } else {
+            setResponse(data.answer || "No answer provided.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error occurred:", error);
+          setResponse(
+            "An error occurred while sending the request. " + String(error)
+          );
+        });
+
+      //   const res = await axios.post("http://127.0.0.1/api/ask/", formData);
+      //   const data = res.data;
+
+      //   if (data.error) {
+      //     setResponse("Error: " + data.error);
+      //   } else {
+      //     setResponse(data.answer || "No answer provided.");
+      //   }
     } catch (error) {
-      setResponse("An error occurred while sending the request.", error);
+      setResponse(
+        "An error occurred while sending the request." + String(error)
+      );
     }
   };
 
