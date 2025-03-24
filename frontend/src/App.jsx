@@ -53,7 +53,7 @@ const App = () => {
 
     try {
       axios
-        .post("http://127.0.0.1/api/ask/", formData)
+        .post("http://127.0.0.1:8000/api/ask/", formData)
         .then((res) => {
           const data = res.data;
 
