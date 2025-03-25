@@ -9,24 +9,12 @@ services:
     env_file:
       - ./backend/.env
 
-  frontend:
-    image: dedukr/frontend:latest
-    build:
-      context: ./frontend
-    volumes:
-      - frontend_build:/frontend/build/
-
   nginx:
     image: dedukr/nginx:latest
-    build: 
-      context: ./nginx
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
     ports:
       - "80:80"
-    volumes:
-      - frontend_build:/var/www/frontend/
     depends_on:
       - backend
-      - frontend
-
-volumes:
-  frontend_build:

@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /backend
 
 # Install Python dependencies
-COPY requirements.txt /backend/
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the Django application code to the container
