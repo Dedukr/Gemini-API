@@ -11,9 +11,6 @@ RUN npm install
 # Copy frontend source code into the container
 COPY ../frontend/ ./
 
-ARG REACT_APP_BASE_IP
-ENV REACT_APP_BASE_IP=$REACT_APP_BASE_IP
-
 
 RUN npm run build  
 
