@@ -6,6 +6,8 @@ services:
     command: gunicorn backend.wsgi --bind 0.0.0.0:8000
     ports:
       - "8000:8000"
+    env_file:
+      - ./backend/.env
 
   frontend:
     image: dedukr/frontend:latest

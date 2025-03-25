@@ -21,11 +21,9 @@ const App = () => {
 
   const handleQuestionChange = (e, func = false) => {
     if (func) {
-      console.log("From another function:", e);
       setQuestion(e);
       return;
     }
-    console.log("From handler function:", e.target.value);
     setQuestion(e.target.value);
   };
 
@@ -53,7 +51,7 @@ const App = () => {
 
     try {
       axios
-        .post("http://127.0.0.1:8000/api/ask/", formData)
+        .post("http://127.0.0.1/api/ask/", formData)
         .then((res) => {
           const data = res.data;
 
@@ -69,15 +67,6 @@ const App = () => {
             "An error occurred while sending the request. " + String(error)
           );
         });
-
-      //   const res = await axios.post("http://127.0.0.1/api/ask/", formData);
-      //   const data = res.data;
-
-      //   if (data.error) {
-      //     setResponse("Error: " + data.error);
-      //   } else {
-      //     setResponse(data.answer || "No answer provided.");
-      //   }
     } catch (error) {
       setResponse(
         "An error occurred while sending the request." + String(error)

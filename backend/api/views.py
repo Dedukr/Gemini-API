@@ -1,7 +1,4 @@
-import json
-import os
 import uuid
-from io import BytesIO
 
 import boto3
 import requests
@@ -23,13 +20,6 @@ class AskGeminiView(APIView):
         if not question or not image:
             return Response({"error": "Missing question or image"}, status=400)
 
-        print(f"FILES: {request.FILES}")
-        print(f"DATA: {request.data}")
-
-        print(f"Image: {image}")
-        print(f"Image Name: {getattr(image, 'name', None)}")
-        print(f"Content Type: {getattr(image, 'content_type', None)}")
-
         if not image or not getattr(image, "name", None):
             return Response({"error": "Invalid image file"}, status=400)
 
@@ -37,10 +27,7 @@ class AskGeminiView(APIView):
 
         try:
             file_key = f"{uuid.uuid4()}-{image.name}"
-            content_type = image.content_type or "application/octet-stream"
-            
-            print(f"Uploading to S3: {file_key}, Content Type: {content_type}")
-            
+
             # Upload image to S3
             s3 = boto3.client(
                 "s3",
@@ -48,13 +35,10 @@ class AskGeminiView(APIView):
                 aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
                 region_name=settings.AWS_S3_REGION_NAME,
             )
-            
-            file_like_object = BytesIO(image.read())
-            print(file_like_object)
-            
+
             # Upload the file (no ACL: public-read)
             s3.upload_fileobj(
-                Fileobj=file_like_object,
+                Fileobj=image,
                 Bucket=settings.AWS_STORAGE_BUCKET_NAME,
                 Key=file_key,
                 ExtraArgs={"ContentType": content_type},
@@ -64,7 +48,6 @@ class AskGeminiView(APIView):
             return Response({"error": str(e)}, status=500)
 
         try:
-            print(f"Generating pre-signed URL for: {file_key}")
             # Generate a pre-signed URL
             image_url = s3.generate_presigned_url(
                 ClientMethod="get_object",
