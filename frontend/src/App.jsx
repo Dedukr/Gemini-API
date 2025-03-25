@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import SpeechRecognition from "./components/SpeechRecognition";
 import axios from "axios";
 
-const BASE_URL = "http://ruslan-konoz.com";
+const BASE_URL = "https://ruslan-konoz.com";
 
 const App = () => {
   const [file, setFile] = useState(null);
