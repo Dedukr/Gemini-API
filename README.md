@@ -2,6 +2,9 @@
 ## Ruslan Konoz
 #### 25/03/2025
 
+Online 🟢
+https://ruslan-konoz.com
+
 ## Installation proccess
 ```bash
 sudo apt update
