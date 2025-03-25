@@ -52,7 +52,6 @@ const App = () => {
     setResponse("Waiting for the response...");
 
     try {
-      console.log("Sending request to", `${BASE_URL}/api/ask/`);
       axios
         .post(`${BASE_URL}/api/ask/`, formData)
         .then((res) => {
