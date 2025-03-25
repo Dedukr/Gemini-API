@@ -19,6 +19,6 @@ services:
     depends_on:
       - backend
     args:
-        REACT_APP_BASE_URL: ${REACT_APP_BASE_URL}
+        REACT_APP_BASE_IP: ${REACT_APP_BASE_IP}
     env_file:
       - ./frontend/.env
