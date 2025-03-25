@@ -10,9 +10,13 @@ RUN npm install
 
 # Copy frontend source code into the container
 COPY ../frontend/ ./
+
+ARG REACT_APP_BASE_URL
+ENV REACT_APP_BASE_URL=$REACT_APP_BASE_URL
+
+
 RUN npm run build  
 
-# Install dependencies and build the frontend
 
 # -------- Stage 2: Serve with NGINX --------
 FROM nginx:alpine

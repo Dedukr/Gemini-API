@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import SpeechRecognition from "./components/SpeechRecognition";
 import axios from "axios";
 
-const BASE_IP = import.meta.env.VITE_BASE_IP || "localhost";
+const BASE_IP = process.env.REACT_APP_BASE_IP || "localhost";
 
 const App = () => {
   const [file, setFile] = useState(null);
@@ -52,6 +52,7 @@ const App = () => {
     setResponse("Waiting for the response...");
 
     try {
+      console.log("Sending request to", `http://${BASE_IP}/api/ask/`);
       axios
         .post(`http://${BASE_IP}/api/ask/`, formData)
         .then((res) => {

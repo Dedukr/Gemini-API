@@ -18,5 +18,7 @@ services:
       - "80:80"
     depends_on:
       - backend
+    args:
+        REACT_APP_BASE_URL: ${REACT_APP_BASE_URL}
     env_file:
       - ./frontend/.env
