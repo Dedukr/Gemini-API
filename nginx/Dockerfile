@@ -20,6 +20,7 @@ FROM nginx:alpine
 
 # Copy Nginx configuration
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf 
+COPY /etc/ssl/ /etc/ssl/
 
 # Copy the built frontend files from the build stage
 COPY --from=build-stage /frontend/build/ /var/www/frontend/
